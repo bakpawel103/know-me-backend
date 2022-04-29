@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/")
+@CrossOrigin(maxAge = 3600)
 public class QuestionController {
     @Autowired()
     private QuestionRepository questionRepository;
