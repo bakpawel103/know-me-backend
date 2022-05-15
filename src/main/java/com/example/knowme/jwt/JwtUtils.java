@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
 
 import io.jsonwebtoken.*;
+
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);

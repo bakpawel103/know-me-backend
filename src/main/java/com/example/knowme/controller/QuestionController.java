@@ -36,7 +36,6 @@ public class QuestionController {
         return this.questionRepository.save(question);
     }
 
-    // update question
     @PutMapping("questions/{id}")
     public ResponseEntity<Question> updateQuestion(@PathVariable(value = "id") Long questionId, @Validated @RequestBody Question questionDetails) throws ResourceNotFoundException {
         Question question = questionRepository.findById(questionId)
@@ -53,7 +52,7 @@ public class QuestionController {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Question not found for this id :: " + questionId));
 
-        this.questionRepository.delete(question);
+        questionRepository.delete(question);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
 

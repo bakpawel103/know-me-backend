@@ -15,7 +15,8 @@ public class Question {
     @Column(name = "answered")
     private boolean answered;
 
-    public Question() { }
+    public Question() {
+    }
 
     public Question(String name, String description, boolean answered) {
         this.name = name;
