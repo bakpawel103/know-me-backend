@@ -3,8 +3,10 @@ package com.example.knowme.services;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.example.knowme.model.Deck;
 import com.example.knowme.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,15 +20,17 @@ public class UserDetailsImpl implements UserDetails {
     private String email;
     @JsonIgnore
     private String password;
+    private Set<Deck> decks;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+                           Collection<? extends GrantedAuthority> authorities, Set<Deck> decks) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.decks = decks;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -38,7 +42,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities);
+                authorities,
+                user.getDecks());
     }
 
     @Override
@@ -62,6 +67,14 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public Set<Deck> getDecks() {
+        return decks;
+    }
+
+    public void setDecks(Set<Deck> decks) {
+        this.decks = decks;
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.example.knowme.model.response;
 
+import com.example.knowme.model.Deck;
+
 import java.util.List;
+import java.util.Set;
 
 public class JwtResponse {
     private String token;
@@ -9,13 +12,15 @@ public class JwtResponse {
     private String username;
     private String email;
     private List<String> roles;
+    private Set<Deck> decks;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, Set<Deck> decks) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
+        this.decks = decks;
     }
 
     public String getAccessToken() {
@@ -60,5 +65,13 @@ public class JwtResponse {
 
     public List<String> getRoles() {
         return roles;
+    }
+
+    public Set<Deck> getDecks() {
+        return decks;
+    }
+
+    public void setDecks(Set<Deck> decks) {
+        this.decks = decks;
     }
 }
