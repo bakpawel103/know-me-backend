@@ -3,6 +3,7 @@ package com.example.knowme.model;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "decks")
@@ -10,6 +11,8 @@ public class Deck {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "secretId")
+    private String secretId;
     @Column(name = "name")
     private String name;
     @ManyToMany(fetch = FetchType.LAZY)
@@ -23,11 +26,21 @@ public class Deck {
 
     public Deck(String name) {
         this.name = name;
+        this.secretId = UUID.randomUUID().toString();
     }
 
     public Deck(String name, Set<Question> questions) {
         this.name = name;
         this.questions = questions;
+        this.secretId = UUID.randomUUID().toString();
+    }
+
+    public String getSecretId() {
+        return secretId;
+    }
+
+    public void setSecretId(String secretId) {
+        this.secretId = secretId;
     }
 
     public String getName() {

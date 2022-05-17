@@ -3,20 +3,18 @@ package com.example.knowme.controller;
 import com.example.knowme.exception.ResourceNotFoundException;
 import com.example.knowme.model.Deck;
 import com.example.knowme.model.User;
-import com.example.knowme.model.request.UserDeckRequest;
 import com.example.knowme.model.request.UserRequest;
 import com.example.knowme.model.response.MessageResponse;
 import com.example.knowme.repository.DeckRepository;
 import com.example.knowme.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -58,19 +56,9 @@ public class UserController {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
-        Set<Long> longDecks = userRequest.getDecks();
-        Set<Deck> decks = new HashSet<>();
-
-        longDecks.forEach(deckLong -> {
-            Deck newDeck = deckRepository.findById(deckLong)
-                    .orElseThrow(() -> new RuntimeException("Error: Deck is not found."));
-            decks.add(newDeck);
-        });
-
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
         user.setPassword(encoder.encode(userRequest.getPassword()));
-        user.setDecks(decks);
 
         return ResponseEntity.ok(this.userRepository.save(user));
     }
@@ -82,39 +70,29 @@ public class UserController {
         return ResponseEntity.ok().body(user.getDecks());
     }
 
-    @PutMapping("users/{id}/decks/set")
-    public ResponseEntity<?> setUserDecks(@PathVariable(value = "id") Long userId, @Validated @RequestBody UserDeckRequest userDeckRequest) throws ResourceNotFoundException {
+    @PutMapping("users/{id}/decks")
+    public ResponseEntity<?> setUserDecks(@PathVariable(value = "id") Long userId, @RequestBody String deckSecretId) throws ResourceNotFoundException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
-        Set<Deck> decks = new HashSet<>();
+        Deck newDeck = deckRepository.findBySecretId(deckSecretId)
+                .orElseThrow(() -> new RuntimeException("Error: Deck is not found for this secret " + deckSecretId));
 
-        userDeckRequest.getDecks().forEach(deckLong -> {
-            Deck newDeck = deckRepository.findById(deckLong)
-                    .orElseThrow(() -> new RuntimeException("Error: Deck is not found."));
-            decks.add(newDeck);
-        });
+        Set<Deck> decks = user.getDecks();
+        decks.add(newDeck);
 
         user.setDecks(decks);
 
         return ResponseEntity.ok(this.userRepository.save(user));
     }
 
-    @PutMapping("users/{id}/decks/add")
-    public ResponseEntity<?> addUserDecks(@PathVariable(value = "id") Long userId, @Validated @RequestBody UserDeckRequest userDeckRequest) throws ResourceNotFoundException {
+    @DeleteMapping("users/{id}/decks")
+    public ResponseEntity<?> deleteDeck(@PathVariable(value = "id") Long userId, @RequestBody String deckSecretId) throws ResourceNotFoundException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
-        Set<Deck> decks = new HashSet<>();
-
-        userDeckRequest.getDecks().forEach(deckLong -> {
-            Deck newDeck = deckRepository.findById(deckLong)
-                    .orElseThrow(() -> new RuntimeException("Error: Deck is not found."));
-            decks.add(newDeck);
-        });
-        decks.addAll(user.getDecks());
-
-        user.setDecks(decks);
+        Deck foundDeck = user.getDecks().stream().filter(deck -> deck.getSecretId().equals(deckSecretId)).findFirst().get();
+        user.getDecks().remove(foundDeck);
 
         return ResponseEntity.ok(this.userRepository.save(user));
     }

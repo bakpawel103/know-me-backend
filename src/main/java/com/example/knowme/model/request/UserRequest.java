@@ -16,7 +16,6 @@ public class UserRequest {
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
-    private Set<Long> decks;
 
     public String getUsername() {
         return username;
@@ -40,13 +39,5 @@ public class UserRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Long> getDecks() {
-        return decks;
-    }
-
-    public void setDecks(Set<Long> decks) {
-        this.decks = decks;
     }
 }
