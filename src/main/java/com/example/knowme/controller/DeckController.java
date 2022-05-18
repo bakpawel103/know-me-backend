@@ -25,11 +25,17 @@ public class DeckController {
     @Autowired()
     private QuestionRepository questionRepository;
 
-
     @GetMapping("decks/{id}")
     public ResponseEntity<Deck> getDeckById(@PathVariable(value = "id") Long deckId) throws ResourceNotFoundException {
         Deck deck = deckRepository.findById(deckId)
                 .orElseThrow(() -> new ResourceNotFoundException("Deck not found for this id :: " + deckId));
+        return ResponseEntity.ok().body(deck);
+    }
+
+    @GetMapping("decks")
+    public ResponseEntity<Deck> getDeckById(@RequestBody String deckSecretId) throws ResourceNotFoundException {
+        Deck deck = deckRepository.findBySecretId(deckSecretId)
+                .orElseThrow(() -> new ResourceNotFoundException("Deck not found for this id :: " + deckSecretId));
         return ResponseEntity.ok().body(deck);
     }
 
