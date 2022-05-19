@@ -30,6 +30,6 @@
 | -------- | ------------------------ | -------------------------- |
 | `GET`    | `/api/v1/questions`      | Retrieve all questions.    |
 | `GET`    | `/api/v1/questions/{id}` | Retrieve question with id. |
-| `POST`   | `/api/v1/questions`      | Create a new post.         |
+| `POST`   | `/api/v1/questions`      | Create a new question      |
 | `PUT`    | `/api/v1/questions/{id}` | Update question with id.   |
 | `DELETE` | `/api/v1/questions/{id}` | Delete question with id.   |
