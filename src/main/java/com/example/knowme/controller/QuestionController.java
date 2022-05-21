@@ -1,16 +1,17 @@
 package com.example.knowme.controller;
 
 import com.example.knowme.exception.ResourceNotFoundException;
+import com.example.knowme.model.Deck;
 import com.example.knowme.model.Question;
+import com.example.knowme.model.request.DeckRequest;
+import com.example.knowme.repository.DeckRepository;
 import com.example.knowme.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -18,6 +19,8 @@ import java.util.Map;
 public class QuestionController {
     @Autowired()
     private QuestionRepository questionRepository;
+    @Autowired()
+    private DeckRepository deckRepository;
 
     @GetMapping("questions")
     public List<Question> getAllQuestions() {
@@ -34,6 +37,17 @@ public class QuestionController {
     @PostMapping("questions")
     public Question createQuestion(@RequestBody Question question) {
         return this.questionRepository.save(question);
+    }
+
+    @PostMapping("questions/decks/{secretId}")
+    public Deck createQuestionInDeck(@PathVariable(value = "secretId") String secretId, @Validated @RequestBody Question question) throws ResourceNotFoundException {
+        Question newQuestion = this.questionRepository.save(question);
+
+        Deck deck = deckRepository.findBySecretId(secretId)
+                .orElseThrow(() -> new ResourceNotFoundException("Deck not found for this id :: " + secretId));
+        deck.getQuestions().add(newQuestion);
+
+        return deck;
     }
 
     @PutMapping("questions/{id}")
