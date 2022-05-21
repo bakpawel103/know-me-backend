@@ -47,7 +47,7 @@ public class QuestionController {
                 .orElseThrow(() -> new ResourceNotFoundException("Deck not found for this id :: " + secretId));
         deck.getQuestions().add(newQuestion);
 
-        return deck;
+        return this.deckRepository.save(deck);
     }
 
     @PutMapping("questions/{id}")
