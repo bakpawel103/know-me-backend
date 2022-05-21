@@ -8,7 +8,6 @@ import com.example.knowme.model.response.MessageResponse;
 import com.example.knowme.repository.DeckRepository;
 import com.example.knowme.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;

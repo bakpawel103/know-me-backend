@@ -1,6 +1,6 @@
 # Know me App REST API
 
-#### Authentification
+#### Authentication
 | Method   | URL                        | Description               |
 | -------- | -------------------------- | ------------------------- |
 | `GET`    | `/api/auth/signin`         | Sign in user.             |
@@ -17,13 +17,13 @@
 | `DELETE`  | `/api/v1/users/{id}/decks`    | Delete deck with secretId from user with id.  |
 
 #### Decks
-| Method   | URL                        | Description                   |
-| -------- | -------------------------  | ----------------------------- |
-| `GET`    | `/api/v1/decks/{id}`       | Retrieve deck with id.        |
-| `GET`    | `/api/v1/decks/{secretId}` | Retrieve deck with secretId.  |
-| `POST`   | `/api/v1/decks`            | Add new deck.                 |
-| `PUT`    | `/api/v1/decks/{id}`       | Update deck with id.          |
-| `DELETE` | `/api/v1/decks/{id}`       | Delete deck with id.          |
+| Method   | URL                                 | Description                   |
+| -------- |-------------------------------------| ----------------------------- |
+| `GET`    | `/api/v1/decks/{id}`                | Retrieve deck with id.        |
+| `GET`    | `/api/v1/decks?secretId={secretId}` | Retrieve deck with secretId.  |
+| `POST`   | `/api/v1/decks`                     | Add new deck.                 |
+| `PUT`    | `/api/v1/decks/{id}`                | Update deck with id.          |
+| `DELETE` | `/api/v1/decks/{id}`                | Delete deck with id.          |
 
 #### Questions
 | Method   | URL                      | Description                |

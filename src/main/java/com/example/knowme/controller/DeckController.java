@@ -32,10 +32,10 @@ public class DeckController {
         return ResponseEntity.ok().body(deck);
     }
 
-    @GetMapping("decks/{secretId}")
-    public ResponseEntity<Deck> getDeckBySecretId(@PathVariable(value = "secretId") String deckSecretId) throws ResourceNotFoundException {
-        Deck deck = deckRepository.findBySecretId(deckSecretId)
-                .orElseThrow(() -> new ResourceNotFoundException("Deck not found for this secret id :: " + deckSecretId));
+    @GetMapping("decks")
+    public ResponseEntity<Deck> getDeckBySecretId(@RequestParam(value = "secretId") String secretId) throws ResourceNotFoundException {
+        Deck deck = deckRepository.findBySecretId(secretId)
+                .orElseThrow(() -> new ResourceNotFoundException("Deck not found for this secret id :: " + secretId));
         return ResponseEntity.ok().body(deck);
     }
 
